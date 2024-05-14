@@ -116,6 +116,26 @@ resource "aws_vpc_endpoint" "aws_backend_vpc_endpoint" {
   ]
 }
 
+##### creation of custom route tables
+
+resource "aws_route_table" "aws_backend_private_route_table" {
+  vpc_id = aws_vpc.aws_backend_vpc.id
+
+  tags = {
+    Name = "aws-backend-private-route-table"
+  }
+}
+
+resource "aws_route_table" "aws_backend_public_route_table" {
+  vpc_id = aws_vpc.aws_backend_vpc.id
+
+  tags = {
+    Name = "aws-backend-public-route-table"
+  }
+}
+
+##### vpc peering
+
 resource "aws_vpc_peering_connection" "aws_backend_vpc_peering_connection" {
   vpc_id        = aws_vpc.aws_backend_vpc.id
   peer_vpc_id   = var.vpc_id_to_peer
@@ -125,26 +145,69 @@ resource "aws_vpc_peering_connection" "aws_backend_vpc_peering_connection" {
   }
 }
 
-resource "aws_route_table" "aws_backend_vpc_route_table" {
-  vpc_id = aws_vpc.aws_backend_vpc.id
-
-  tags = {
-    Name = "aws-backend-vpc-route-table"
-  }
-}
-
 resource "aws_route" "aws_backend_vpc_route" {
-  route_table_id              = aws_route_table.aws_backend_vpc_route_table.id
+  route_table_id              = aws_route_table.aws_backend_private_route_table.id
   destination_cidr_block      = var.cidr_block_of_vpc_to_peer
   vpc_peering_connection_id   = aws_vpc_peering_connection.aws_backend_vpc_peering_connection.id
 }
 
+##### associate private subnets to private route table
+
 resource "aws_route_table_association" "aws_backend_private_subnet1_association" {
   subnet_id      = aws_subnet.aws_backend_private_subnet1.id
-  route_table_id = aws_route_table.aws_backend_vpc_route_table.id
+  route_table_id = aws_route_table.aws_backend_private_route_table.id
 }
 
 resource "aws_route_table_association" "aws_backend_private_subnet2_association" {
   subnet_id      = aws_subnet.aws_backend_private_subnet2.id
-  route_table_id = aws_route_table.aws_backend_vpc_route_table.id
+  route_table_id = aws_route_table.aws_backend_private_route_table.id
+}
+
+##### associate public subnets to public route table
+
+resource "aws_route_table_association" "aws_backend_public_subnet1_association" {
+  subnet_id      = aws_subnet.aws_backend_public_subnet1.id
+  route_table_id = aws_route_table.aws_backend_public_route_table.id
+}
+
+resource "aws_route_table_association" "aws_backend_public_subnet2_association" {
+  subnet_id      = aws_subnet.aws_backend_public_subnet2.id
+  route_table_id = aws_route_table.aws_backend_public_route_table.id
+}
+
+##### internet gateways
+
+resource "aws_internet_gateway" "aws_backend_internet_gateway" {
+  vpc_id = aws_vpc.aws_backend_vpc.id
+
+  tags = {
+    Name = "aws-backend-internet-gateway"
+  }
+}
+
+resource "aws_route" "aws_backend_ig_route" {
+  route_table_id         = aws_route_table.aws_backend_public_route_table.id
+  destination_cidr_block = "0.0.0.0/0"
+  gateway_id             = aws_internet_gateway.aws_backend_internet_gateway.id
+}
+
+##### nat gateways
+
+resource "aws_nat_gateway" "aws_backend_nat_gateway" {
+  allocation_id = aws_eip.aws_backend_nat_eip.id
+  subnet_id     = aws_subnet.aws_backend_public_subnet1.id
+
+  tags = {
+    Name = "aws-backend-nat-gateway"
+  }
+}
+
+resource "aws_eip" "aws_backend_nat_eip" {
+  vpc = true
+}
+
+resource "aws_route" "aws_backend_ng_route" {
+  route_table_id         = aws_route_table.aws_backend_private_route_table.id
+  destination_cidr_block = "0.0.0.0/0"
+  nat_gateway_id         = aws_nat_gateway.aws_backend_nat_gateway.id
 }
