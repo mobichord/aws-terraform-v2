@@ -32,64 +32,9 @@ variable "github_token" { # this token needs to be generated in the github's dev
 
 ########## modules/vpc ##########
 
-variable "vpc_cidr_block" {
-  type        = string
-  description = "Designated CIDR block of VPC to be created."
-}
-
-variable "private_subnet1_cidr_block" {
-  type        = string
-  description = "Designated CIDR block of aws-backend-private-subnet-1 to be created."
-}
-
-variable "private_subnet2_cidr_block" {
-  type        = string
-  description = "Designated CIDR block of aws-backend-private-subnet-2 to be created."
-}
-
-variable "public_subnet1_cidr_block" {
-  type        = string
-  description = "Designated CIDR block of aws-backend-public-subnet-1 to be created."
-}
-
-variable "public_subnet2_cidr_block" {
-  type        = string
-  description = "Designated CIDR block of aws-backend-public-subnet-2 to be created."
-}
-
-variable "private_subnet1_az" {
-  type        = string
-  description = "Designated availability zone of aws-backend-private-subnet-1 to be created."
-}
-
-variable "private_subnet2_az" {
-  type        = string
-  description = "Designated availability zone of aws-backend-private-subnet-2 to be created."
-}
-
-variable "public_subnet1_az" {
-  type        = string
-  description = "Designated availability zone of aws-backend-public-subnet-1 to be created."
-}
-
-variable "public_subnet2_az" {
-  type        = string
-  description = "Designated availability zone of aws-backend-public-subnet-2 to be created."
-}
-
-variable "vpc_id_to_peer" {
-  type        = string
-  description = "ID of the VPC to peer with."
-}
-
 variable "private_ip_to_peer" {
   type        = string
   description = "Private IPv4 of the VPC to communicate with."
-}
-
-variable "cidr_block_of_vpc_to_peer" {
-  type        = string
-  description = "CIDR block of the peered VPC to add for routing tables."
 }
 
 ########## aws-mongodb-get-api/lambda ##########
@@ -110,18 +55,6 @@ variable "path_part" {
   type        = string
   description = "Path part of the API endpoint."
   default     = "documents"
-}
-
-########## modules/sns ##########
-
-variable "recipient_for_budgets" {
-  type        = string
-  description = "The recipient of the budget alerts when the threshold exceeds."
-}
-
-variable "recipient_for_cloudwatch" {
-  type        = string
-  description = "The recipient of the cloudwatch alarms when there is an error."
 }
 
 ########## aws-mongodb-get-api/budgets ##########

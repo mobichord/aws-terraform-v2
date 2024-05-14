@@ -3,7 +3,7 @@ output "aws_backend_load_balancer_arn" {
   value       = aws_lb.aws_backend_load_balancer.arn
 }
 
-output "aws_backend_load_balancer_uri" {
+output "aws_backend_load_balancer_dns_name" {
   description = "The URI of the Load Balancer."
   value       = aws_lb.aws_backend_load_balancer.dns_name
 }
@@ -18,7 +18,7 @@ output "aws_backend_load_balancer_listener_id" {
   value       = aws_lb_listener.aws_backend_load_balancer_listener.id
 }
 
-output "aws_backend_load_balancer_target_group1_arn" {
-  description = "The ARN of the Load Balancer's target group."
-  value       = aws_lb_target_group.aws_backend_load_balancer_target_group1.arn
+output "aws_backend_load_balancer_listener_arn" {
+  description = "The ARN of the Load Balancer Listener."
+  value       = aws_lb_listener.aws_backend_load_balancer_listener.arn
 }

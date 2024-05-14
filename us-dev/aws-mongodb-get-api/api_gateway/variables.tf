@@ -14,19 +14,9 @@ variable "project_tag" {
   description = "Provide the repository name. Used for tagging the resources created."
 }
 
-variable "aws_region" {
-  type        = string
-  description = "Designated AWS_REGION where this solution will be deployed."
-}
-
 variable "aws_environment" {
   type        = string
   description = "Designated AWS_ENV where this solution will be deployed."
-}
-
-variable "mongodb_name" {
-  type        = string
-  description = "Database name for the lambda to query with and api gateway as the path part of the API endpoint."
 }
 
 variable "path_part" {

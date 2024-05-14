@@ -44,3 +44,19 @@ variable "aws_backend_security_group2_id" {
   type        = string
   description = "Designated security group of lambdas in aws-backend-vpc."
 }
+
+variable "aws_backend_load_balancer_listener_arn" {
+  type        = string
+  description = "The ARN of the Load Balancer Listener."
+}
+
+variable "aws_environment" {
+  type        = string
+  description = "Designated AWS_ENV where this solution will be deployed."
+}
+
+variable "path_part" {
+  type        = string
+  description = "Path part of the API endpoint."
+  default     = "documents"
+}
