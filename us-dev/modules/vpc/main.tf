@@ -118,11 +118,19 @@ resource "aws_vpc_endpoint" "aws_backend_vpc_endpoint" {
 
 ##### creation of custom route tables
 
-resource "aws_route_table" "aws_backend_private_route_table" {
+resource "aws_route_table" "aws_backend_private_route_table1" {
   vpc_id = aws_vpc.aws_backend_vpc.id
 
   tags = {
-    Name = "aws-backend-private-route-table"
+    Name = "aws-backend-private-route-table-1"
+  }
+}
+
+resource "aws_route_table" "aws_backend_private_route_table2" {
+  vpc_id = aws_vpc.aws_backend_vpc.id
+
+  tags = {
+    Name = "aws-backend-private-route-table-2"
   }
 }
 
@@ -134,33 +142,16 @@ resource "aws_route_table" "aws_backend_public_route_table" {
   }
 }
 
-##### vpc peering
-
-resource "aws_vpc_peering_connection" "aws_backend_vpc_peering_connection" {
-  vpc_id        = aws_vpc.aws_backend_vpc.id
-  peer_vpc_id   = var.vpc_id_to_peer
-
-  tags = {
-    Name = "aws-backend-vpc-peering"
-  }
-}
-
-resource "aws_route" "aws_backend_vpc_route" {
-  route_table_id              = aws_route_table.aws_backend_private_route_table.id
-  destination_cidr_block      = var.cidr_block_of_vpc_to_peer
-  vpc_peering_connection_id   = aws_vpc_peering_connection.aws_backend_vpc_peering_connection.id
-}
-
 ##### associate private subnets to private route table
 
 resource "aws_route_table_association" "aws_backend_private_subnet1_association" {
   subnet_id      = aws_subnet.aws_backend_private_subnet1.id
-  route_table_id = aws_route_table.aws_backend_private_route_table.id
+  route_table_id = aws_route_table.aws_backend_private_route_table1.id
 }
 
 resource "aws_route_table_association" "aws_backend_private_subnet2_association" {
   subnet_id      = aws_subnet.aws_backend_private_subnet2.id
-  route_table_id = aws_route_table.aws_backend_private_route_table.id
+  route_table_id = aws_route_table.aws_backend_private_route_table2.id
 }
 
 ##### associate public subnets to public route table
@@ -175,6 +166,31 @@ resource "aws_route_table_association" "aws_backend_public_subnet2_association" 
   route_table_id = aws_route_table.aws_backend_public_route_table.id
 }
 
+##### vpc peering
+
+resource "aws_vpc_peering_connection" "aws_backend_vpc_peering_connection" {
+  vpc_id        = aws_vpc.aws_backend_vpc.id
+  peer_vpc_id   = var.vpc_id_to_peer
+
+  tags = {
+    Name = "aws-backend-vpc-peering"
+  }
+}
+
+# add vpc peering to private route table
+
+resource "aws_route" "aws_backend_vpc_route1" {
+  route_table_id              = aws_route_table.aws_backend_private_route_table1.id
+  destination_cidr_block      = var.cidr_block_of_vpc_to_peer
+  vpc_peering_connection_id   = aws_vpc_peering_connection.aws_backend_vpc_peering_connection.id
+}
+
+resource "aws_route" "aws_backend_vpc_route2" {
+  route_table_id              = aws_route_table.aws_backend_private_route_table2.id
+  destination_cidr_block      = var.cidr_block_of_vpc_to_peer
+  vpc_peering_connection_id   = aws_vpc_peering_connection.aws_backend_vpc_peering_connection.id
+}
+
 ##### internet gateways
 
 resource "aws_internet_gateway" "aws_backend_internet_gateway" {
@@ -185,29 +201,53 @@ resource "aws_internet_gateway" "aws_backend_internet_gateway" {
   }
 }
 
-resource "aws_route" "aws_backend_ig_route" {
+# add internet gateway to public route table
+
+resource "aws_route" "aws_backend_ig_route1" {
   route_table_id         = aws_route_table.aws_backend_public_route_table.id
   destination_cidr_block = "0.0.0.0/0"
   gateway_id             = aws_internet_gateway.aws_backend_internet_gateway.id
 }
 
 ##### nat gateways
+# add nat gateways to public subnets
 
-resource "aws_nat_gateway" "aws_backend_nat_gateway" {
-  allocation_id = aws_eip.aws_backend_nat_eip.id
+resource "aws_nat_gateway" "aws_backend_nat_gateway1" {
+  allocation_id = aws_eip.aws_backend_nat_eip1.id
   subnet_id     = aws_subnet.aws_backend_public_subnet1.id
 
   tags = {
-    Name = "aws-backend-nat-gateway"
+    Name = "aws-backend-nat-gateway-1"
   }
 }
 
-resource "aws_eip" "aws_backend_nat_eip" {
+resource "aws_nat_gateway" "aws_backend_nat_gateway2" {
+  allocation_id = aws_eip.aws_backend_nat_eip2.id
+  subnet_id     = aws_subnet.aws_backend_public_subnet2.id
+
+  tags = {
+    Name = "aws-backend-nat-gateway-2"
+  }
+}
+
+resource "aws_eip" "aws_backend_nat_eip1" {
   vpc = true
 }
 
-resource "aws_route" "aws_backend_ng_route" {
-  route_table_id         = aws_route_table.aws_backend_private_route_table.id
+resource "aws_eip" "aws_backend_nat_eip2" {
+  vpc = true
+}
+
+# add nat gateways to private route table
+
+resource "aws_route" "aws_backend_ng_route1" {
+  route_table_id         = aws_route_table.aws_backend_private_route_table1.id
   destination_cidr_block = "0.0.0.0/0"
-  nat_gateway_id         = aws_nat_gateway.aws_backend_nat_gateway.id
+  nat_gateway_id         = aws_nat_gateway.aws_backend_nat_gateway1.id
+}
+
+resource "aws_route" "aws_backend_ng_route2" {
+  route_table_id         = aws_route_table.aws_backend_private_route_table2.id
+  destination_cidr_block = "0.0.0.0/0"
+  nat_gateway_id         = aws_nat_gateway.aws_backend_nat_gateway2.id
 }
