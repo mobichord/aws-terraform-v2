@@ -1,3 +1,7 @@
+variable "prefix_name" {
+  type = string
+}
+
 variable "cost_center_tag" {
   type        = string
   description = "Used for tagging the resources created."
@@ -43,11 +47,6 @@ variable "aws_backend_private_subnet2_id" {
 variable "aws_backend_security_group2_id" {
   type        = string
   description = "Designated security group of lambdas in aws-backend-vpc."
-}
-
-variable "aws_backend_load_balancer_listener_arn" {
-  type        = string
-  description = "The ARN of the Load Balancer Listener."
 }
 
 variable "aws_environment" {
