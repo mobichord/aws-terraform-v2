@@ -26,7 +26,7 @@ provider "github" {
 }
 
 module "vpc" {
-  source                     = "github.com/aws-backend-solutions/aws-terraform-personal/us-dev/modules/vpc"
+  source                     = "github.com/mobichord/aws-terraform-v2/us-dev/modules/vpc"
   prefix_name                = var.prefix_name
   aws_region                 = var.aws_region
   vpc_cidr_block             = var.vpc_cidr_block
@@ -45,7 +45,7 @@ module "vpc" {
 }
 
 module "alb" {
-  source                         = "github.com/aws-backend-solutions/aws-terraform-personal/us-dev/modules/alb"
+  source                         = "github.com/mobichord/aws-terraform-v2/us-dev/modules/alb"
   prefix_name                    = var.prefix_name
   environment_tag                = var.environment_tag
   aws_backend_private_subnet1_id = module.vpc.aws_backend_private_subnet1_id
@@ -56,7 +56,7 @@ module "alb" {
 }
 
 module "sns" {
-  source                   = "github.com/aws-backend-solutions/aws-terraform-personal/us-dev/modules/sns"
+  source                   = "github.com/mobichord/aws-terraform-v2/us-dev/modules/sns"
   prefix_name              = var.prefix_name
   environment_tag          = var.environment_tag
   recipient_for_budgets    = var.recipient_for_budgets
