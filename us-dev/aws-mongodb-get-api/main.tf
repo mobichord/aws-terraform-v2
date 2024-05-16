@@ -36,33 +36,39 @@ data "terraform_remote_state" "modules" {
 }
 
 module "lambda" {
-  source                                 = "github.com/mobichord/aws-terraform-v2/us-dev/aws-mongodb-get-api/lambda"
-  environment_tag                        = var.environment_tag
-  project_tag                            = var.project_tag
-  aws_environment                        = var.aws_environment
-  path_part                              = var.path_part
-  mongodb_url                            = "mongodb://${var.private_ip_to_peer}:27017/"
-  mongodb_name                           = var.mongodb_name
-  aws_backend_private_subnet1_id         = data.terraform_remote_state.modules.outputs.aws_backend_private_subnet1_id
-  aws_backend_private_subnet2_id         = data.terraform_remote_state.modules.outputs.aws_backend_private_subnet2_id
-  aws_backend_security_group2_id         = data.terraform_remote_state.modules.outputs.aws_backend_security_group2_id
-  aws_backend_load_balancer_listener_arn = data.terraform_remote_state.modules.outputs.aws_backend_load_balancer_listener_arn
+  source                         = "github.com/aws-backend-solutions/aws-terraform-personal/us-dev/aws-mongodb-get-api/lambda"
+  prefix_name                    = var.prefix_name
+  environment_tag                = var.environment_tag
+  project_tag                    = var.project_tag
+  aws_environment                = var.aws_environment
+  path_part                      = var.path_part
+  mongodb_url                    = "mongodb://${var.private_ip_to_peer}:27017/"
+  mongodb_name                   = var.mongodb_name
+  aws_backend_private_subnet1_id = data.terraform_remote_state.modules.outputs.aws_backend_private_subnet1_id
+  aws_backend_private_subnet2_id = data.terraform_remote_state.modules.outputs.aws_backend_private_subnet2_id
+  aws_backend_security_group2_id = data.terraform_remote_state.modules.outputs.aws_backend_security_group2_id
 }
 
 module "api_gateway" {
-  source                                = "github.com/mobichord/aws-terraform-v2/us-dev/aws-mongodb-get-api/api_gateway"
-  environment_tag                       = var.environment_tag
-  project_tag                           = var.project_tag
-  aws_environment                       = var.aws_environment
-  path_part                             = var.path_part
-  aws_backend_public_subnet1_id         = data.terraform_remote_state.modules.outputs.aws_backend_public_subnet1_id
-  aws_backend_public_subnet2_id         = data.terraform_remote_state.modules.outputs.aws_backend_public_subnet2_id
-  aws_backend_security_group1_id        = data.terraform_remote_state.modules.outputs.aws_backend_security_group1_id
-  aws_backend_load_balancer_listener_id = data.terraform_remote_state.modules.outputs.aws_backend_load_balancer_listener_id
+  source                             = "github.com/aws-backend-solutions/aws-terraform-personal/us-dev/aws-mongodb-get-api/api_gateway"
+  prefix_name                        = var.prefix_name
+  environment_tag                    = var.environment_tag
+  project_tag                        = var.project_tag
+  aws_environment                    = var.aws_environment
+  path_part                          = var.path_part
+  aws_backend_private_subnet1_id     = data.terraform_remote_state.modules.outputs.aws_backend_private_subnet1_id
+  aws_backend_private_subnet2_id     = data.terraform_remote_state.modules.outputs.aws_backend_private_subnet2_id
+  aws_backend_security_group2_id     = data.terraform_remote_state.modules.outputs.aws_backend_security_group2_id
+  aws_backend_load_balancer_arn      = data.terraform_remote_state.modules.outputs.aws_backend_load_balancer_arn
+  aws_backend_load_balancer_dns_name = data.terraform_remote_state.modules.outputs.aws_backend_load_balancer_dns_name
+  aws_backend_vpc_endpoint_arn       = data.terraform_remote_state.modules.outputs.aws_backend_vpc_endpoint_arn
+  aws_backend_vpc_endpoint_id        = data.terraform_remote_state.modules.outputs.aws_backend_vpc_endpoint_id
+  aws_mongodb_ga_function_invoke_arn = module.lambda.aws_mongodb_ga_function_invoke_arn
 }
 
 module "budgets" {
-  source                          = "github.com/mobichord/aws-terraform-v2/us-dev/aws-mongodb-get-api/budgets"
+  source                          = "github.com/aws-backend-solutions/aws-terraform-personal/us-dev/aws-mongodb-get-api/budgets"
+  prefix_name                     = var.prefix_name
   environment_tag                 = var.environment_tag
   project_tag                     = var.project_tag
   budget_alert_topic_arn          = data.terraform_remote_state.modules.outputs.budget_alert_topic_arn
@@ -73,7 +79,8 @@ module "budgets" {
 }
 
 module "cloudwatch" {
-  source                     = "github.com/mobichord/aws-terraform-v2/us-dev/aws-mongodb-get-api/cloudwatch"
+  source                     = "github.com/aws-backend-solutions/aws-terraform-personal/us-dev/aws-mongodb-get-api/cloudwatch"
+  prefix_name                = var.prefix_name
   environment_tag            = var.environment_tag
   project_tag                = var.project_tag
   cloudwatch_alarm_topic_arn = data.terraform_remote_state.modules.outputs.cloudwatch_alarm_topic_arn
