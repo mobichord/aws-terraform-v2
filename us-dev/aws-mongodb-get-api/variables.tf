@@ -36,33 +36,63 @@ variable "github_token" { # this token needs to be generated in the github's dev
 
 ########## modules/vpc ##########
 
-variable "vpc_id_to_peer" {
-  type        = string
-  description = "ID of the VPC to peer with."
-}
-
-variable "private_ip_to_peer" {
-  type        = string
-  description = "Private IPv4 of the VPC to communicate with."
-}
-
-variable "cidr_block_of_vpc_to_peer" {
-  type        = string
-  description = "CIDR block of the peered VPC to add for routing tables."
-}
-
 ########## aws-mongodb-get-api/lambda ##########
 
-variable "mongodb_name" {
+variable "us_dev_url" {
+  type        = string
+  description = "Connection string of the MongoDB to connect with."
+}
+
+variable "us_stage_url" {
+  type        = string
+  description = "Connection string of the MongoDB to connect with."
+}
+
+variable "us_prod_url" {
+  type        = string
+  description = "Connection string of the MongoDB to connect with."
+}
+
+variable "eu_stage_url" {
+  type        = string
+  description = "Connection string of the MongoDB to connect with."
+}
+
+variable "eu_prod_url" {
+  type        = string
+  description = "Connection string of the MongoDB to connect with."
+}
+
+variable "us_dev_db" {
+  type        = string
+  description = "Database name for the lambda to query with."
+}
+
+variable "us_stage_db" {
+  type        = string
+  description = "Database name for the lambda to query with."
+}
+
+variable "us_prod_db" {
+  type        = string
+  description = "Database name for the lambda to query with."
+}
+
+variable "eu_stage_db" {
+  type        = string
+  description = "Database name for the lambda to query with."
+}
+
+variable "eu_prod_db" {
   type        = string
   description = "Database name for the lambda to query with."
 }
 
 ########## aws-mongodb-get-api/api_gateway ##########
 
-variable "aws_environment" {
+variable "stage_name" {
   type        = string
-  description = "Designated AWS_ENV where this solution will be deployed."
+  description = "Stage where this solution will be deployed."
 }
 
 variable "path_part" {

@@ -24,16 +24,6 @@ variable "lambda_function_name" {
   default     = "aws-mongodb-ga-function"
 }
 
-variable "mongodb_url" {
-  type        = string
-  description = "Connection string of the MongoDB to connect with."
-}
-
-variable "mongodb_name" {
-  type        = string
-  description = "Database name for the lambda to query with."
-}
-
 variable "aws_backend_private_subnet1_id" {
   type        = string
   description = "Designated CIDR block of aws-backend-private-subnet-1 to be created."
@@ -49,13 +39,63 @@ variable "aws_backend_security_group2_id" {
   description = "Designated security group of lambdas in aws-backend-vpc."
 }
 
-variable "aws_environment" {
+variable "stage_name" {
   type        = string
-  description = "Designated AWS_ENV where this solution will be deployed."
+  description = "Stage where this solution will be deployed."
 }
 
 variable "path_part" {
   type        = string
   description = "Path part of the API endpoint."
   default     = "documents"
+}
+
+variable "us_dev_url" {
+  type        = string
+  description = "Connection string of the MongoDB to connect with."
+}
+
+variable "us_stage_url" {
+  type        = string
+  description = "Connection string of the MongoDB to connect with."
+}
+
+variable "us_prod_url" {
+  type        = string
+  description = "Connection string of the MongoDB to connect with."
+}
+
+variable "eu_stage_url" {
+  type        = string
+  description = "Connection string of the MongoDB to connect with."
+}
+
+variable "eu_prod_url" {
+  type        = string
+  description = "Connection string of the MongoDB to connect with."
+}
+
+variable "us_dev_db" {
+  type        = string
+  description = "Database name for the lambda to query with."
+}
+
+variable "us_stage_db" {
+  type        = string
+  description = "Database name for the lambda to query with."
+}
+
+variable "us_prod_db" {
+  type        = string
+  description = "Database name for the lambda to query with."
+}
+
+variable "eu_stage_db" {
+  type        = string
+  description = "Database name for the lambda to query with."
+}
+
+variable "eu_prod_db" {
+  type        = string
+  description = "Database name for the lambda to query with."
 }
