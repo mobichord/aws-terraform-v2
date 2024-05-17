@@ -1,5 +1,0 @@
-requests
-pymongo
-boto3
-cryptography
-pycryptodome
