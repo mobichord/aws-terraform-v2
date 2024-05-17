@@ -36,7 +36,7 @@ data "terraform_remote_state" "modules" {
 }
 
 module "lambda" {
-  source                         = "github.com/mobichord/aws-terraform-v2/us-dev/aws-mongodb-get-api/lambda"
+  source                         = "github.com/aws-backend-solutions/aws-terraform-personal/us-dev/aws-mongodb-get-api/lambda"
   prefix_name                    = var.prefix_name
   environment_tag                = var.environment_tag
   project_tag                    = var.project_tag
@@ -50,7 +50,7 @@ module "lambda" {
 }
 
 module "api_gateway" {
-  source                             = "github.com/mobichord/aws-terraform-v2/us-dev/aws-mongodb-get-api/api_gateway"
+  source                             = "github.com/aws-backend-solutions/aws-terraform-personal/us-dev/aws-mongodb-get-api/api_gateway"
   prefix_name                        = var.prefix_name
   environment_tag                    = var.environment_tag
   project_tag                        = var.project_tag
@@ -67,7 +67,7 @@ module "api_gateway" {
 }
 
 module "budgets" {
-  source                          = "github.com/mobichord/aws-terraform-v2/us-dev/aws-mongodb-get-api/budgets"
+  source                          = "github.com/aws-backend-solutions/aws-terraform-personal/us-dev/aws-mongodb-get-api/budgets"
   prefix_name                     = var.prefix_name
   environment_tag                 = var.environment_tag
   project_tag                     = var.project_tag
@@ -79,7 +79,7 @@ module "budgets" {
 }
 
 module "cloudwatch" {
-  source                     = "github.com/mobichord/aws-terraform-v2/us-dev/aws-mongodb-get-api/cloudwatch"
+  source                     = "github.com/aws-backend-solutions/aws-terraform-personal/us-dev/aws-mongodb-get-api/cloudwatch"
   prefix_name                = var.prefix_name
   environment_tag            = var.environment_tag
   project_tag                = var.project_tag
