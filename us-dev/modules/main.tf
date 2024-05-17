@@ -38,21 +38,7 @@ module "vpc" {
   private_subnet2_az         = var.private_subnet2_az
   public_subnet1_az          = var.public_subnet1_az
   public_subnet2_az          = var.public_subnet2_az
-  vpc_id_to_peer             = var.vpc_id_to_peer
-  private_ip_to_peer         = var.private_ip_to_peer
-  cidr_block_of_vpc_to_peer  = var.cidr_block_of_vpc_to_peer
   environment_tag            = var.environment_tag
-}
-
-module "alb" {
-  source                         = "github.com/aws-backend-solutions/aws-terraform-personal/us-dev/modules/alb"
-  prefix_name                    = var.prefix_name
-  environment_tag                = var.environment_tag
-  aws_backend_private_subnet1_id = module.vpc.aws_backend_private_subnet1_id
-  aws_backend_private_subnet2_id = module.vpc.aws_backend_private_subnet2_id
-  aws_backend_public_subnet1_id  = module.vpc.aws_backend_public_subnet1_id
-  aws_backend_public_subnet2_id  = module.vpc.aws_backend_public_subnet2_id
-  aws_backend_security_group1_id = module.vpc.aws_backend_security_group1_id
 }
 
 module "sns" {

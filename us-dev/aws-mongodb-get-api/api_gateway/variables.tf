@@ -28,39 +28,9 @@ variable "path_part" {
   description = "Path part of the API endpoint."
 }
 
-variable "aws_backend_private_subnet1_id" {
-  type        = string
-  description = "Designated CIDR block of aws-backend-private-subnet-1 to be created."
-}
-
-variable "aws_backend_private_subnet2_id" {
-  type        = string
-  description = "Designated CIDR block of aws-backend-private-subnet-2 to be created."
-}
-
-variable "aws_backend_security_group2_id" {
-  type        = string
-  description = "Designated security group of lambdas in aws-backend-vpc."
-}
-
-variable "aws_backend_load_balancer_arn" {
-  type        = string
-  description = "The ARN of the Load Balancer."
-}
-
-variable "aws_backend_load_balancer_dns_name" {
-  type        = string
-  description = "The URI of the Load Balancer."
-}
-
 variable "aws_backend_vpc_endpoint_id" {
   type        = string
   description = "The ID of the AwsBackendVpcEndpoint."
-}
-
-variable "aws_backend_vpc_endpoint_arn" {
-  type        = string
-  description = "The ARN of the AwsBackendVpcEndpoint."
 }
 
 variable "aws_mongodb_ga_function_invoke_arn" {
