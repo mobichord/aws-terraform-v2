@@ -32,6 +32,7 @@ variable "project_tag" {
 variable "aws_profile" {
   type        = string
   description = "Provide the repository name. Used for tagging the resources created."
+  default     = "terraform-aws-platform"
 }
 
 variable "aws_role_arn" {

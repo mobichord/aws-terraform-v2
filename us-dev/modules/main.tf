@@ -15,7 +15,8 @@ terraform {
     }
   }
   backend "s3" {
-    bucket         = "aws-platform-terraform-statefile"
+    profile        = "terraform-aws-platformsdad"
+    bucket         = "aws-platform-terrafodasdasrm-statefile"
     key            = "modules/terraform.tfstate"
     region         = "us-west-2"
     encrypt        = true

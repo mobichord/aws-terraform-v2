@@ -29,10 +29,10 @@ variable "project_tag" {
   description = "Provide the repository name. Used for tagging the resources created."
 }
 
-variable "github_token" { # this token needs to be generated in the github's developer settings with a read:project permission.
-  type        = string
-  description = "Token to authenticate the use of github links as the source path for the modules."
-}
+# variable "github_token" { # this token needs to be generated in the github's developer settings with a read:project permission.
+#   type        = string
+#   description = "Token to authenticate the use of github links as the source path for the modules."
+# }
 
 ########## modules/vpc ##########
 

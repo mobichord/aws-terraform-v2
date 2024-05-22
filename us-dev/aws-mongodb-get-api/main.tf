@@ -21,9 +21,9 @@ provider "aws" {
   secret_key = var.aws_secret_key
 }
 
-provider "github" {
-  token = var.github_token
-}
+# provider "github" {
+#   token = var.github_token
+# }
 
 data "terraform_remote_state" "modules" {
   backend = "s3"
