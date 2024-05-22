@@ -1,3 +1,12 @@
+provider "aws" {
+  region     = var.aws_region
+  profile = var.aws_profile
+  assume_role {
+    role_arn = var.aws_role_arn
+    session_name = var.aws_session_role
+  }
+}
+
 terraform {
   required_providers {
     aws = {
@@ -5,25 +14,19 @@ terraform {
       version = "~> 4.16"
     }
   }
-
   backend "s3" {
-    bucket         = "aws-backend-tfstate"
+    bucket         = "aws-platform-terraform-statefile"
     key            = "modules/terraform.tfstate"
     region         = "us-west-2"
     encrypt        = true
-    dynamodb_table = "aws-backend-tf-lockid"
+    dynamodb_table = "aws-platform-terraform-lockstate"
   }
 }
 
-provider "aws" {
-  region     = var.aws_region
-  access_key = var.aws_access_key
-  secret_key = var.aws_secret_key
-}
 
-provider "github" {
-  token = var.github_token
-}
+# provider "github" {
+#   token = var.github_token
+# }
 
 module "vpc" {
   source                     = "github.com/aws-backend-solutions/aws-terraform-personal/us-dev/modules/vpc"
