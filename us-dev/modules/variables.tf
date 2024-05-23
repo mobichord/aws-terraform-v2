@@ -87,7 +87,7 @@ variable "vpc_id_to_peer" {
 }
 
 variable "cidr_block_of_vpc_to_peer" {
-  type        = string
+  type        = list(string)
   description = "CIDR block of the peered VPC to add for routing tables."
 }
 
