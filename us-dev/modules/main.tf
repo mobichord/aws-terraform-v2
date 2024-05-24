@@ -5,25 +5,28 @@ terraform {
       version = "~> 4.16"
     }
   }
-
   backend "s3" {
-    bucket         = "aws-backend-tfstate"
+    profile        = "terraform-aws-platform"
+    bucket         = "aws-platform-terraform-statefile"
     key            = "modules/terraform.tfstate"
     region         = "us-west-2"
     encrypt        = true
-    dynamodb_table = "aws-backend-tf-lockid"
+    dynamodb_table = "aws-platform-terraform-lockstate"
   }
 }
 
 provider "aws" {
   region     = var.aws_region
-  access_key = var.aws_access_key
-  secret_key = var.aws_secret_key
+  profile = var.aws_profile
+  assume_role {
+    role_arn = var.aws_role_arn
+    session_name = var.aws_session_role
+  }
 }
 
-provider "github" {
-  token = var.github_token
-}
+# provider "github" {
+#   token = var.github_token
+# }
 
 module "vpc" {
   source                     = "github.com/mobichord/aws-terraform-v2/us-dev/modules/vpc"
