@@ -213,7 +213,8 @@ resource "aws_vpc_peering_connection" "aws_mongodb_ga_peering_connection" {
 }
 
 resource "aws_route" "aws_mongodb_ga_route" {
+  for_each                  = toset(var.cidr_block_of_vpc_to_peer)
   route_table_id            = aws_route_table.aws_backend_private_route_table.id
-  destination_cidr_block    = var.cidr_block_of_vpc_to_peer
+  destination_cidr_block    = each.value
   vpc_peering_connection_id = aws_vpc_peering_connection.aws_mongodb_ga_peering_connection.id
 }
