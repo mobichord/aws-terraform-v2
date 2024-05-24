@@ -1,5 +1,9 @@
 ########## common variables ##########
 
+variable "prefix_name" {
+  type = string
+}
+
 variable "aws_region" {
   type        = string
   description = "Designated AWS_REGION where this solution will be deployed."
@@ -32,12 +36,12 @@ variable "github_token" { # this token needs to be generated in the github's dev
 
 ########## modules/vpc ##########
 
-variable "private_ip_to_peer" {
-  type        = string
-  description = "Private IPv4 of the VPC to communicate with."
-}
-
 ########## aws-mongodb-get-api/lambda ##########
+
+variable "mongodb_url" {
+  type        = string
+  description = "Connection string of the MongoDB to connect with."
+}
 
 variable "mongodb_name" {
   type        = string
@@ -46,9 +50,9 @@ variable "mongodb_name" {
 
 ########## aws-mongodb-get-api/api_gateway ##########
 
-variable "aws_environment" {
+variable "stage_name" {
   type        = string
-  description = "Designated AWS_ENV where this solution will be deployed."
+  description = "Stage where this solution will be deployed."
 }
 
 variable "path_part" {

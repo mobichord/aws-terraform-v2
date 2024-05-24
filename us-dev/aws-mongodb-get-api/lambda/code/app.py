@@ -12,7 +12,7 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 try:
-    client = pymongo.MongoClient(host=os.environ['MONGODB_URI']+os.environ['DATABASE_NAME'])
+    client = pymongo.MongoClient(host=os.environ['MONGODB_URI']+os.environ['MONGODB_NAME'])
 except Exception as e:
     print(f"Failed to establish MongoDB connection during initialization: {str(e)}")
 
@@ -24,7 +24,7 @@ def lambda_handler(event, context):
         if conn_status['statusCode'] != 200:
             return conn_status
             
-        database_name = os.environ.get('DATABASE_NAME')
+        database_name = os.environ.get('MONGODB_NAME')
         db = client[database_name]
         # body_dict = json.loads(event['body'])
 

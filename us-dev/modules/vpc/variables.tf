@@ -1,3 +1,7 @@
+variable "prefix_name" {
+  type = string
+}
+
 variable "cost_center_tag" {
   type        = string
   description = "Used for tagging the resources created."
@@ -64,12 +68,7 @@ variable "vpc_id_to_peer" {
   description = "ID of the VPC to peer with."
 }
 
-variable "private_ip_to_peer" {
-  type        = string
-  description = "Private IPv4 of the VPC to communicate with."
-}
-
 variable "cidr_block_of_vpc_to_peer" {
-  type        = string
+  type        = list(string)
   description = "CIDR block of the peered VPC to add for routing tables."
 }
