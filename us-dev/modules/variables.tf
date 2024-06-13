@@ -9,16 +9,6 @@ variable "aws_region" {
   description = "Designated AWS_REGION where this solution will be deployed."
 }
 
-# variable "aws_access_key" {
-#   type        = string
-#   description = "Access key for the AWS profile."
-# }
-
-# variable "aws_secret_key" {
-#   type        = string
-#   description = "Secret key for the AWS profile."
-# }
-
 variable "environment_tag" {
   type        = string
   description = "Provide which environment this will be deployed. Used for tagging the resources created."
@@ -29,26 +19,10 @@ variable "project_tag" {
   description = "Provide the repository name. Used for tagging the resources created."
 }
 
-variable "aws_profile" {
+variable "github_token" { # this token needs to be generated in the github's developer settings with a read:project permission.
   type        = string
-  description = "Provide the repository name. Used for tagging the resources created."
-  default     = "terraform-aws-platform"
+  description = "Token to authenticate the use of github links as the source path for the modules."
 }
-
-variable "aws_role_arn" {
-  type        = string
-  description = "Provide the repository name. Used for tagging the resources created."
-}
-
-variable "aws_session_role" {
-  type        = string
-  description = "Provide the repository name. Used for tagging the resources created."
-}
-
-# variable "github_token" { # this token needs to be generated in the github's developer settings with a read:project permission.
-#   type        = string
-#   description = "Token to authenticate the use of github links as the source path for the modules."
-# }
 
 ########## modules/vpc ##########
 
@@ -103,7 +77,7 @@ variable "vpc_id_to_peer" {
 }
 
 variable "cidr_block_of_vpc_to_peer" {
-  type        = list(string)
+  type        = string
   description = "CIDR block of the peered VPC to add for routing tables."
 }
 
