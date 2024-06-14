@@ -5,31 +5,26 @@ terraform {
       version = "~> 4.16"
     }
   }
+
   backend "s3" {
-    profile        = "terraform-aws-platform"
-    bucket         = "aws-platform-terraform-statefile"
+    bucket         = "aws-backend-tf-state"
     key            = "modules/terraform.tfstate"
     region         = "us-west-2"
     encrypt        = true
-    dynamodb_table = "aws-platform-terraform-lockstate"
+    dynamodb_table = "aws-backend-tf-lockid"
   }
 }
 
 provider "aws" {
-  region     = var.aws_region
-  profile = var.aws_profile
-  assume_role {
-    role_arn = var.aws_role_arn
-    session_name = var.aws_session_role
-  }
+  region = var.aws_region
 }
 
-# provider "github" {
-#   token = var.github_token
-# }
+provider "github" {
+  token = var.github_token
+}
 
 module "vpc" {
-  source                     = "github.com/mobichord/aws-terraform-v2/us-dev/modules/vpc"
+  source                     = "github.com/aws-backend-solutions/aws-terraform-personal/us-dev/modules/vpc"
   prefix_name                = var.prefix_name
   aws_region                 = var.aws_region
   vpc_cidr_block             = var.vpc_cidr_block
@@ -47,9 +42,14 @@ module "vpc" {
 }
 
 module "sns" {
-  source                   = "github.com/mobichord/aws-terraform-v2/us-dev/modules/sns"
+  source                   = "github.com/aws-backend-solutions/aws-terraform-personal/us-dev/modules/sns"
   prefix_name              = var.prefix_name
   environment_tag          = var.environment_tag
   recipient_for_budgets    = var.recipient_for_budgets
   recipient_for_cloudwatch = var.recipient_for_cloudwatch
+}
+
+module "iam" {
+  source      = "github.com/aws-backend-solutions/aws-terraform-personal/us-dev/modules/iam"
+  prefix_name = var.prefix_name
 }
