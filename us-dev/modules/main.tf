@@ -53,3 +53,8 @@ module "sns" {
   recipient_for_budgets    = var.recipient_for_budgets
   recipient_for_cloudwatch = var.recipient_for_cloudwatch
 }
+
+module "iam" {
+  source      = "github.com/mobichord/aws-terraform-v2/us-dev/modules/iam"
+  prefix_name = var.prefix_name
+}
